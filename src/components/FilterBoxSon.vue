@@ -83,7 +83,7 @@ let conditions = ref([
   {"label": "小于", "value": "<"},
   {"label": "大于等于", "value": ">="},
   {"label": "小于等于", "value": "<="},
-  {"label": "正则判断", "value": "regex"},
+  {"label": "正则判断", "value": "regexp"},
 ]);
 
 let data = ref(parentData);

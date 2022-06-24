@@ -47,7 +47,13 @@
     </div>
   </div>
   <el-button type="primary" @click="createSql(data)">生成</el-button>
+  <el-button type="primary" @click="executeSql">执行SQL</el-button>
   <el-input type="textarea" v-model="sqlData"></el-input>
+  <div class="table-contain" style="margin-top: 50px;width: 900px">
+    <el-table :data="tableData" style="width: 100%" border>
+      <el-table-column v-for="item in fields" :prop="item.value" :label="item.label" width="180" />
+    </el-table>
+  </div>
 </template>
 
 <script setup>
@@ -78,6 +84,8 @@ let conditions = ref([
 let sqlData = ref('');
 
 let tableName = ref('');
+
+let tableData = ref([]);
 
 /**
  * 此处存放条件判断
@@ -113,6 +121,14 @@ const changeLink = () => {
   data.value.link = data.value.link === 'and' ? 'or' : 'and';
 };
 
+// 执行sql
+const executeSql = ()=>{
+  axios.post('http://localhost:8081/sql/execute',{
+    sql: sqlData.value
+  }).then(res=>{
+    tableData.value = res.data.data;
+  })
+};
 
 const addCondition = () => {
   data.value.conditionArray.push({
@@ -197,26 +213,26 @@ const createSecondSql = (data) => {
 
 onMounted((() => {
   // 动态获取所有列名
-  // axios.get('http://localhost:8081/sql/getColumns').then(res => {
-  //   let data = res.data.data;
-  //   for (let dataItem of data) {
-  //     fields.value.push({
-  //       label: dataItem.columnComment,
-  //       value: dataItem.columnName
-  //     })
-  //   }
-  //   tableName.value = res.data.tableName
-  // })
-
-  // 直接本地获取,读取json文件
-  let dataJson = tableFieldsJson;
-    for (let dataItem of dataJson.data) {
+  axios.get('http://localhost:8081/sql/getColumns').then(res => {
+    let data = res.data.data;
+    for (let dataItem of data) {
       fields.value.push({
         label: dataItem.columnComment,
         value: dataItem.columnName
       })
     }
-    tableName.value = dataJson.tableName
+    tableName.value = res.data.tableName
+  })
+
+  // 直接本地获取,读取json文件
+  // let dataJson = tableFieldsJson;
+  //   for (let dataItem of dataJson.data) {
+  //     fields.value.push({
+  //       label: dataItem.columnComment,
+  //       value: dataItem.columnName
+  //     })
+  //   }
+  //   tableName.value = dataJson.tableName
 }))
 
 
