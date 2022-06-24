@@ -1,0 +1,25 @@
+{
+  "data": [
+    {
+      "columnComment": "主键",
+      "columnName": "id"
+    },
+    {
+      "columnComment": "用户名",
+      "columnName": "username"
+    },
+    {
+      "columnComment": "注册来源",
+      "columnName": "registered_source"
+    },
+    {
+      "columnComment": "年龄",
+      "columnName": "age"
+    },
+    {
+      "columnComment": "订单总额",
+      "columnName": "total_order"
+    }
+  ],
+  "tableName": "t_user"
+}
